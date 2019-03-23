@@ -2,6 +2,8 @@ export class Player extends Phaser.Sprite {
     private jumpButton: Phaser.Key;
     private jump: boolean;
     private fall: boolean;
+    private gravSpeed: number;
+    private jumpSpeed: number;
     constructor(game: Phaser.Game, x: number, y: number, key: string, parent: PIXI.DisplayObjectContainer) {
         super(game, x, y, key);
         parent.addChild(this);
@@ -13,6 +15,8 @@ export class Player extends Phaser.Sprite {
     private dinoJump(): void {
         if (this.y >= 358) {
             this.jump = true;
+            this.gravSpeed = 1;
+            this.jumpSpeed = 20;
         }
     }
 
@@ -24,14 +28,16 @@ export class Player extends Phaser.Sprite {
 
     update() {
         if (this.jump) {
-            this.y -= 4;
+            this.y -= this.jumpSpeed;
+            this.jumpSpeed -= this.gravSpeed;
         }
-            if (this.y <= 270) {
+            if (this.b <= 0) {
             this.jump = false;
             this.fall = true;
         }
         if (this.fall) {
-            this.y += 4;
+            this.jumpSpeed += this.gravSpeed;
+            this.y += this.b;
         }
         if (this.y >= 358) {
             this.fall = false;

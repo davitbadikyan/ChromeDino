@@ -50,9 +50,9 @@ export class GameScreen extends BaseScreen {
 
     update() {
         super.update();
-        this.background.tilePosition.x -= 2;
+        this.background.tilePosition.x -= 5;
         this.cactusArray.forEach((cactus) => {
-            cactus.x -= 2;
+            cactus.x -= 5;
         });
         if (this.cactusArray[0].x + this.cactusArray[0].width === 0) {
             this.cactusArray[0].destroy();

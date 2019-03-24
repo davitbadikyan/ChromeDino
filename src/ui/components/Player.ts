@@ -31,13 +31,13 @@ export class Player extends Phaser.Sprite {
             this.y -= this.jumpSpeed;
             this.jumpSpeed -= this.gravSpeed;
         }
-            if (this.b <= 0) {
+            if (this.jumpSpeed <= 0) {
             this.jump = false;
             this.fall = true;
         }
         if (this.fall) {
             this.jumpSpeed += this.gravSpeed;
-            this.y += this.b;
+            this.y += this.jumpSpeed;
         }
         if (this.y >= 358) {
             this.fall = false;

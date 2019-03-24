@@ -14,6 +14,7 @@ export class GameScreen extends BaseScreen {
     ];
     private cactusArray: Phaser.Sprite[] = [];
     private dino: Player;
+    private removed: Phaser.Sprite[] = [];
 
     constructor(game: Phaser.Game, parent: PIXI.DisplayObjectContainer) {
         super(game, parent);
@@ -45,7 +46,7 @@ export class GameScreen extends BaseScreen {
     }
 
     private initPlayer(): void {
-        this.dino = new Player(this.game, 0, 358, Images.ImagesPlayerStand.getName(),  this);
+        this.dino = new Player(this.game, 15, 358, Images.ImagesPlayerStand.getName(),  this);
     }
 
     update() {
@@ -54,9 +55,17 @@ export class GameScreen extends BaseScreen {
         this.cactusArray.forEach((cactus) => {
             cactus.x -= 5;
         });
-        if (this.cactusArray[0].x + this.cactusArray[0].width === 0) {
-            this.cactusArray[0].destroy();
-            this.cactusArray.splice(0, 1);
+            if (this.cactusArray[0].x + this.cactusArray[0].width >= this.dino.x) {
+                    this.removed = this.cactusArray.splice(0, 1);
+                    this.removed[0].x -= 5;
+
+            }
+            if (this.removed[0].x + this.removed[0].width <= 0) {
+                this.removed[0].destroy();
+            }
+        if (this.dino.x + this.dino.width >= this.cactusArray[0].x + this.cactusArray[0].width ||
+            this.dino.y + this.dino.height >= this.cactusArray[0].y + this.cactusArray[0].height) {
+            console.log('Game Over');
         }
     }
 }

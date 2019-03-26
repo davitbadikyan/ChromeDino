@@ -55,12 +55,12 @@ export class GameScreen extends BaseScreen {
 		this.cactusArray.forEach((cactus) => cactus.x -= 5);
 		if (this.cactusArray[0].x + this.cactusArray[0].width <= this.dino.x) {
 			this.removed = this.cactusArray.splice(0, 1);
-			this.removed[0].x -= 5;
+			this.removed[0].x -= 15;
 		}
 		if (this.removed[0] && this.removed[0].x + this.removed[0].width <= 0) {
 			this.removed[0].destroy();
 		}
-		if (this.cactusArray[0] && (this.dino.x + this.dino.width >= this.cactusArray[0].x + this.cactusArray[0].width ||
+		if (this.cactusArray[0] && (this.dino.x + this.dino.width >= this.cactusArray[0].x &&
 			this.dino.y + this.dino.height >= this.cactusArray[0].y + this.cactusArray[0].height)) {
 			console.log('Game Over');
 		}

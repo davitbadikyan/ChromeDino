@@ -11,12 +11,7 @@ export default class Preloader extends Phaser.State {
 	}
 
 	private waitForSoundDecoding(): void {
-		AssetUtils.Loader.waitForSoundDecoding(this.startGame, this);
-	}
-
-	private startGame(): void {
-		this.game.camera.onFadeComplete.addOnce(this.loadTitle, this);
-		this.game.camera.fade(0x000000, 1000);
+		AssetUtils.Loader.waitForSoundDecoding(this.loadTitle, this);
 	}
 
 	private loadTitle(): void {

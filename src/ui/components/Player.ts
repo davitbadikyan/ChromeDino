@@ -13,6 +13,8 @@ export class Player extends Phaser.Sprite {
 
 	private init(): void {
 		this.initDino();
+		this.initAnimation();
+		this.initAudio();
 	}
 
 	private dinoJump(): void {
@@ -29,8 +31,22 @@ export class Player extends Phaser.Sprite {
 		this.jumpButton.onDown.add(this.dinoJump, this);
 	}
 
+	private initAnimation(): void {
+		this.animations.add('jump', [1]);
+		this.animations.add('walk', [0, 2, 3]);
+		this.animations.add('dead', [4]);
+	}
+
+	private initAudio(): void {
+		this.game.add.audio('checkPoint', Audio.AudioCheckPoint.getName());
+		this.game.add.audio('jump', Audio.AudioJump.getName());
+		this.game.add.audio('die', Audio.AudioDie.getName());
+	}
+
 	update() {
+		this.animations.play('walk', 15, true);
 		if (this.jump) {
+			this.animations.play('jump');
 			this.y -= this.jumpSpeed;
 			this.jumpSpeed -= this.gravSpeed;
 		}
@@ -39,6 +55,7 @@ export class Player extends Phaser.Sprite {
 			this.fall = true;
 		}
 		if (this.fall) {
+			this.animations.play('jump');
 			this.jumpSpeed += this.gravSpeed;
 			this.y += this.jumpSpeed;
 		}

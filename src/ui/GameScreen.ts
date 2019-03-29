@@ -1,4 +1,4 @@
-import {Images} from '../assets';
+import {Images, Spritesheets, Audio} from '../assets';
 import {BaseScreen} from './BaseScreen';
 import {Player} from './components/Player';
 
@@ -46,7 +46,7 @@ export class GameScreen extends BaseScreen {
 	}
 
 	private initPlayer(): void {
-		this.dino = new Player(this.game, 15, 358, Images.ImagesPlayerStand.getName(), this);
+		this.dino = new Player(this.game, 15, 358, Spritesheets.ImagesSpriteSheet88103.getName(), this);
 	}
 
 	update() {
@@ -62,6 +62,7 @@ export class GameScreen extends BaseScreen {
 		}
 		if (this.cactusArray[0] && (this.dino.x + this.dino.width >= this.cactusArray[0].x &&
 			this.dino.y + this.dino.height >= this.cactusArray[0].y + this.cactusArray[0].height)) {
+			this.dino.animations.play('dead');
 			console.log('Game Over');
 		}
 	}

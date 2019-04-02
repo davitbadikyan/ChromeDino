@@ -1,8 +1,6 @@
-import {Images, Spritesheets, Audio} from '../assets';
+import {Images, Spritesheets} from '../assets';
 import {BaseScreen} from './BaseScreen';
 import {Player} from './components/Player';
-
-
 export class GameScreen extends BaseScreen {
 	private background: Phaser.TileSprite;
 	private readonly cactusAssets: string[] = [
@@ -15,6 +13,7 @@ export class GameScreen extends BaseScreen {
 	private cactusArray: Phaser.Sprite[] = [];
 	private dino: Player;
 	private removed: Phaser.Sprite[] = [];
+	private isGameOver: boolean;
 
 	constructor(game: Phaser.Game, parent: PIXI.DisplayObjectContainer) {
 		super(game, parent);
@@ -50,6 +49,7 @@ export class GameScreen extends BaseScreen {
 	}
 
 	update() {
+		if (this.isGameOver) return;
 		super.update();
 		this.background.tilePosition.x -= 5;
 		this.cactusArray.forEach((cactus) => cactus.x -= 5);
@@ -60,10 +60,12 @@ export class GameScreen extends BaseScreen {
 		if (this.removed[0] && this.removed[0].x + this.removed[0].width <= 0) {
 			this.removed[0].destroy();
 		}
+
 		if (this.cactusArray[0] && (this.dino.x + this.dino.width >= this.cactusArray[0].x &&
 			this.dino.y + this.dino.height >= this.cactusArray[0].y + this.cactusArray[0].height)) {
 			this.dino.animations.play('dead');
-			console.log('Game Over');
+			this.game.state.start('gameOver', false, false);
+			this.isGameOver = true;
 		}
 	}
 }

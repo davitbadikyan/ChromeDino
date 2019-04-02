@@ -1,3 +1,4 @@
+import {AudioManager} from '../managers/AudioManager';
 export class Player extends Phaser.Sprite {
 	private jumpButton: Phaser.Key;
 	private jump: boolean;
@@ -14,12 +15,12 @@ export class Player extends Phaser.Sprite {
 	private init(): void {
 		this.initDino();
 		this.initAnimation();
-		this.initAudio();
 	}
 
 	private dinoJump(): void {
 		if (this.y >= 358) {
 			this.jump = true;
+			AudioManager.instance.playJump();
 			this.gravSpeed = 1;
 			this.jumpSpeed = 20;
 		}
@@ -35,12 +36,6 @@ export class Player extends Phaser.Sprite {
 		this.animations.add('jump', [1]);
 		this.animations.add('walk', [0, 2, 3]);
 		this.animations.add('dead', [4]);
-	}
-
-	private initAudio(): void {
-		this.game.add.audio('checkPoint', Audio.AudioCheckPoint.getName());
-		this.game.add.audio('jump', Audio.AudioJump.getName());
-		this.game.add.audio('die', Audio.AudioDie.getName());
 	}
 
 	update() {

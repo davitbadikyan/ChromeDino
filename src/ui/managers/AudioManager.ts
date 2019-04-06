@@ -2,6 +2,7 @@ import {Audio} from '../../assets';
 export class AudioManager {
 	private static _instance: AudioManager;
 	private game: Phaser.Game;
+
 	private constructor() {
 	}
 
@@ -22,9 +23,10 @@ export class AudioManager {
 		const dieSound = this.game.add.audio(Audio.AudioDie.getName());
 		dieSound.play();
 	}
+
 	public playCheckPoint(): void {
 		const checkPointSound = this.game.add.audio(Audio.AudioCheckPoint.getName());
 		checkPointSound.play();
-		}
+	}
 
 }

@@ -1,15 +1,6 @@
 /* AUTO GENERATED FILE. DO NOT MODIFY. YOU WILL LOSE YOUR CHANGES ON BUILD. */
 
 export namespace Images {
-	export class ImagesBackgroundTemplate {
-		static getName(): string {
-			return 'background_template';
-		}
-
-		static getPNG(): string {
-			return require('assets/images/background_template.png');
-		}
-	}
 	export class ImagesBigCactus {
 		static getName(): string {
 			return 'BigCactus';
@@ -167,7 +158,18 @@ export namespace CustomWebFonts {
 }
 
 export namespace BitmapFonts {
-	class IExistSoTypeScriptWillNotComplainAboutAnEmptyNamespace {
+	export class ImagesFont {
+		static getName(): string {
+			return 'font';
+		}
+
+		static getFNT(): string {
+			return require('assets/images/font.fnt');
+		}
+
+		static getPNG(): string {
+			return require('assets/images/font.png');
+		}
 	}
 }
 

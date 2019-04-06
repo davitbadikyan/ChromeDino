@@ -1,4 +1,4 @@
-import {Images, Spritesheets} from '../assets';
+import {BitmapFonts, Images, Spritesheets} from '../assets';
 import {BaseScreen} from './BaseScreen';
 import {Player} from './components/Player';
 export class GameScreen extends BaseScreen {
@@ -14,6 +14,9 @@ export class GameScreen extends BaseScreen {
 	private dino: Player;
 	private removed: Phaser.Sprite[] = [];
 	private isGameOver: boolean;
+	private score = 0;
+	private scoreString: string;
+	private overallScore: Phaser.BitmapText;
 
 	constructor(game: Phaser.Game, parent: PIXI.DisplayObjectContainer) {
 		super(game, parent);
@@ -24,6 +27,7 @@ export class GameScreen extends BaseScreen {
 		this.initBackground();
 		this.initCactuses();
 		this.initPlayer();
+		this.initScore();
 	}
 
 	private initBackground(): void {
@@ -46,6 +50,20 @@ export class GameScreen extends BaseScreen {
 
 	private initPlayer(): void {
 		this.dino = new Player(this.game, 15, 358, Spritesheets.ImagesSpriteSheet88103.getName(), this);
+	}
+
+	private initScore(): void {
+		this.overallScore = this.game.add.bitmapText(700, 100, BitmapFonts.ImagesFont.getName(), null, 20);
+		this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, () => {
+			this.game.time.events.add(0, () => {
+				this.score += 1;
+			}, this);
+			this.scoreString = this.score.toString();
+			for (let i = 0; i <= 5 - this.scoreString.length + 2; i++) {
+				this.scoreString = '0' + this.scoreString;
+			}
+			this.overallScore.text = this.scoreString;
+		}, this);
 	}
 
 	update() {

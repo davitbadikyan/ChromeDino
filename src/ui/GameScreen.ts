@@ -4,13 +4,11 @@ import {Player} from './components/Player';
 import {GameController} from '../controlers/GameControler';
 export class GameScreen extends BaseScreen {
 	private background: Phaser.TileSprite;
-
-	private cactusArray: Phaser.Sprite[] = [];
 	private dino: Player;
-	private removed: Phaser.Sprite[] = [];
 	private isGameOver: boolean;
 	private overallScore: Phaser.BitmapText;
 	private gameController: GameController;
+
 	constructor(game: Phaser.Game, parent: PIXI.DisplayObjectContainer) {
 		super(game, parent);
 		this.initialize();
@@ -22,6 +20,7 @@ export class GameScreen extends BaseScreen {
 		this.initCactuses();
 		this.initPlayer();
 		this.initScore();
+		this.attachListeners();
 	}
 
 	private initBackground(): void {
@@ -39,32 +38,34 @@ export class GameScreen extends BaseScreen {
 	private initCactus(): void {
 		const cactus = this.game.add.sprite(800, 450, this.gameController.getCactusAsset(), null, this);
 		cactus.y -= cactus.height;
-		this.cactusArray.push(cactus);
+		this.gameController.setCactus(cactus);
+		this.gameController.cactusPushingIntoArray();
 	}
 
 	private initPlayer(): void {
 		this.dino = new Player(this.game, 15, 358, Spritesheets.ImagesSpriteSheet88103.getName(), this);
+		this.gameController.setDino(this.dino);
 	}
 
 	private initScore(): void {
-		this.overallScore = this.game.add.bitmapText(700, 100, BitmapFonts.ImagesFont.getName(), this.gameController.getScore(), 20);
+		this.overallScore = this.game.add.bitmapText(700, 100, BitmapFonts.ImagesFont.getName(), '00000', 20);
+	}
+
+	private attachListeners(): void {
+		this.gameController.onScoreChange.add(this.handleChangeScore, this);
+	}
+
+	private handleChangeScore(scoreText: string): void {
+		this.overallScore.text = scoreText;
 	}
 
 	update() {
+		this.gameController.removeingCactusUpdate();
 		if (this.isGameOver) return;
 		super.update();
 		this.background.tilePosition.x -= 5;
-		this.cactusArray.forEach((cactus) => cactus.x -= 5);
-		if (this.cactusArray[0].x + this.cactusArray[0].width <= this.dino.x) {
-			this.removed = this.cactusArray.splice(0, 1);
-			this.removed[0].x -= 15;
-		}
-		if (this.removed[0] && this.removed[0].x + this.removed[0].width <= 0) {
-			this.removed[0].destroy();
-		}
-
-		if (this.cactusArray[0] && (this.dino.x + this.dino.width >= this.cactusArray[0].x &&
-			this.dino.y + this.dino.height >= this.cactusArray[0].y + this.cactusArray[0].height)) {
+		this.gameController.cactusMovementUpdate();
+		if (this.gameController.collisionUpdate()) {
 			this.dino.animations.play('dead');
 			this.game.state.start('gameOver', false, false);
 			this.isGameOver = true;

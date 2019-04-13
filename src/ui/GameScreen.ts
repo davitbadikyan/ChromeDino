@@ -38,8 +38,7 @@ export class GameScreen extends BaseScreen {
 	private initCactus(): void {
 		const cactus = this.game.add.sprite(800, 450, this.gameController.getCactusAsset(), null, this);
 		cactus.y -= cactus.height;
-		this.gameController.setCactus(cactus);
-		this.gameController.cactusPushingIntoArray();
+		this.gameController.addCactus(cactus);
 	}
 
 	private initPlayer(): void {

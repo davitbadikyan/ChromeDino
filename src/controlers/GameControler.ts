@@ -1,6 +1,5 @@
 import {Images} from '../assets';
 import {Player} from '../ui/components/Player';
-import {GameScreen} from '../ui/GameScreen';
 export class GameController {
 	private readonly cactusAssets: string[] = [
 		Images.ImagesBigCactus.getName(),
@@ -15,7 +14,6 @@ export class GameController {
 	private scoreString: string;
 	public onScoreChange: Phaser.Signal = new Phaser.Signal();
 	private dino: Player;
-	private cactus: Phaser.Sprite;
 
 	constructor(private game: Phaser.Game) {
 		this.game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.changeAndDispatchScore, this);
@@ -29,14 +27,9 @@ export class GameController {
 		return this.cactusAssets[Math.floor(Math.random() * 5)];
 	}
 
-	public setCactus(cactus: Phaser.Sprite): void {
-		this.cactus = cactus;
+	public addCactus(cactus: Phaser.Sprite): void {
+		this.cactusArray.push(cactus);
 	}
-
-	public cactusPushingIntoArray(): void {
-		this.cactusArray.push(this.cactus);
-	}
-
 
 	public removeingCactusUpdate(): void {
 		if (this.cactusArray[0].x + this.cactusArray[0].width <= this.dino.x) {
@@ -46,11 +39,10 @@ export class GameController {
 		if (this.removed[0] && this.removed[0].x + this.removed[0].width <= 0) {
 			this.removed[0].destroy();
 		}
-
 	}
 
 	public cactusMovementUpdate(): void {
-		this.cactusArray.forEach((this.cactus) => this.cactus.x -= 5);
+		this.cactusArray.forEach((cactus) => cactus.x -= 5);
 	}
 
 	public collisionUpdate(): boolean {
